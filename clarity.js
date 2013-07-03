@@ -1,6 +1,13 @@
 #!/usr/bin/env node
-var _ = require('underscore'), fs = require('fs'), app = [], pc = 'http';
-    require('colors'); var statics = []; app.static = function(o){statics.push(o)}; app.use = app.push;
+var _ = require('underscore'), 
+		fs = require('fs'), 
+		app = [], 
+		pc = 'http';
+    	require('colors'); 
+    	var statics = []; 
+    	app.static = function(o){statics.push(o)}; 
+    	app.use = function(f){app.push(f)};
+
 function _clarity(options, _fn){
 
 	if(options && options.ssl === 1){
@@ -11,6 +18,7 @@ function _clarity(options, _fn){
    		}
    		pc = 'https';
     } 
+console.log(app)
 
     _fn(options, app);
 
@@ -50,4 +58,4 @@ function notfound(s){
    		s.write("404 Not found");
     	return s.end();
 }
-__filename !== require.main.filename ? module.exports = _clarity : _clarity();
+__filename !== require.main.filename ? module.exports = _clarity : _clarity(process.env);

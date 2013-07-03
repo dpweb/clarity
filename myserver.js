@@ -1,6 +1,6 @@
-require('./clarity.js')(options, function(app){
+require('./clarity.js')({}, function(options, app){
 	 
-	 app.use(function(r, s){
+	 app.push(function(r, s){
 	 	 console.log('a');
 	 	 //return true
 	 })
