@@ -1,14 +1,27 @@
-require('http').createServer(function(r, s){
-	[showurl, showhost].map(function(fn){ fn(r, s) })
-	s.end();
-}).listen(80);
 
-function showurl(r, s){
-	console.log('url is', r.url);
-	s.write('one');
-}
+module.exports = 
 
-function showhost(r, s){
-	console.log('headers host is', r.headers.host);
-	s.write('two');
+{
+	uses: [],
+	use: function(f){
+		this.uses.push(f);
+	},
+	get: function(url, f){
+		this.uses.push(function(r, s){
+			if(r.method == 'GET' && r.url.match(url)) f(r, s);
+		})
+	},
+	post: function(url, f){
+		this.uses.push(function(r, s){
+			if(r.method == 'POST' && r.url.match(url)) f(r, s);
+		})
+	},
+	listen: function(){
+		var that = this;
+		var svr = require('http').createServer(function(r, s){
+			that.uses.map(function(fn){ fn(r, s) })
+			s.end();
+		});
+		svr.listen.apply(svr, [].slice.call(arguments));
+	}
 }
