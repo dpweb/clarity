@@ -1,4 +1,10 @@
 clarity
 =======
 
-Web server subset of Express
+Takes the best features of Connect/Express
+````
+.use()
+.get()
+.post()
+
+````
