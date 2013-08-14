@@ -10,9 +10,9 @@ A Web server. Takes the best features of Connect/Express - in a minimal codebase
 ####.post(/match/, function(r,s,n){...})
 ####.verb(verb, /match/, function(r,s,n){...})
 ####.listen(port, [hostname], [backlog], [callback]) 
-Same params as <a href='http://nodejs.org/api/http.html#http_server_listen_port_hostname_backlog_callback'>http.createServer</a>
+Same params as <a href='http://nodejs.org/api/http.html#http_server_listen_port_hostname_backlog_callback'>http server</a>
 
-Couple things..
+####Couple things..
 
 Functions you add during .use() are last in, first executed on a new request
 
