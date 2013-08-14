@@ -3,6 +3,8 @@ clarity
 
 A Web server. Takes the best features of Connect/Express - in a minimal codebase.
 
+50 lines pure-JS.  5-6 MB RAM footprint.
+
 ####.use(function(r,s,n){...})
 ####.get(/match/, function(r,s,n){...})
 ####.post(/match/, function(r,s,n){...})
