@@ -14,6 +14,8 @@ Couple things..
 
 Functions you add during .use() are last in, first executed on a new request
 
+You must use <b>n()</b> at the end of your .use() functions, see the example below..
+
 ####r.body 
 Is a JSON object that will show combines POST parameters and GET parameters, for instance..
 
