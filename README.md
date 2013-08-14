@@ -1,10 +1,28 @@
 clarity
 =======
 
-Takes the best features of Connect/Express
-````
-.use()
-.get()
-.post()
+A Web server. Takes the best features of Connect/Express - in a minimal codebase.
 
+##.use(function(r,s,n){...})
+##.get(/match/, function(r,s,n){...})
+##.post(/match/, function(r,s,n){...})
+##.verb(verb, /match/, function(r,s,n){...})
+##.listen(port, [hostname], [backlog], [callback]) 
+Same params as <a href='http://nodejs.org/api/http.html#http_server_listen_port_hostname_backlog_callback'>http.createServer</a>
+
+Couple things..
+
+Functions you add during .use() are last in, first executed on a new request
+
+##r.body 
+Is a JSON object that will show combines POST parameters and GET parameters, for instance..
+
+Posting origins=NY&destinations=CA in the POST body to http://localhost/?q=1 results in..
+
+````
+{
+	"q": "1",
+	"origins": "NY",
+	"destinations": "CA"
+}
 ````

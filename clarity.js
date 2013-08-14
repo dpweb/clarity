@@ -1,27 +1,47 @@
 
-module.exports = 
-
-{
-	uses: [],
-	use: function(f){
-		this.uses.push(f);
+var clarity = {
+	chain: function(r, s, n){
+		s.end();
 	},
-	get: function(url, f){
-		this.uses.push(function(r, s){
-			if(r.method == 'GET' && r.url.match(url)) f(r, s);
+	use: function (f){
+		this.chain = (function(nxt){
+			return function(r, s, n){
+				f(r, s, nxt.bind(this, r, s));
+			}
+		})(this.chain);
+	},
+	verb: function (vrb, url, f){
+		this.use(function(r, s, n){
+			if(r.method == vrb && r.url.match(url)){
+				f(r, s, n);
+			} else {
+				n();
+			}
 		})
 	},
-	post: function(url, f){
-		this.uses.push(function(r, s){
-			if(r.method == 'POST' && r.url.match(url)) f(r, s);
-		})
+	get: function (url, f){
+		this.verb('GET', url, f);
 	},
-	listen: function(){
-		var that = this;
-		var svr = require('http').createServer(function(r, s){
-			that.uses.map(function(fn){ fn(r, s) })
-			s.end();
-		});
+	post: function (url, f){
+		this.verb('POST', url, f);
+	},
+	listen: function (){
+		// Get query or post data
+		this.use(function (r, s, n){
+			r.body = require('url').parse(r.url, true).query,
+			r.postbody = '';
+		    r.on('data', function (data) {
+		        r.postbody += data;
+		    });
+		    r.on('end', function(){
+		    	var o = require('querystring').parse(r.postbody);
+		    	for(i in o) r.body[i] = o[i];
+		    	n();
+		    });
+		})
+		var svr = require('http').createServer(clarity.chain);
 		svr.listen.apply(svr, [].slice.call(arguments));
 	}
 }
+
+module.exports = clarity;
