@@ -3,12 +3,15 @@ var clarity = {
 	chain: function(r, s, n){
 		s.end();
 	},
-	use: function (f){
-		this.chain = (function(nxt){
-			return function(r, s, n){
-				f(r, s, nxt.bind(this, r, s));
-			}
-		})(this.chain);
+	use: function (){
+		var that = this;
+		[].map.call(arguments, function(f){
+			that.chain = (function(nxt){
+				return function(r, s, n){
+					f(r, s, nxt.bind(this, r, s));
+				}
+			})(that.chain);
+		})
 	},
 	verb: function (vrb, url, f){
 		this.use(function(r, s, n){
@@ -26,8 +29,9 @@ var clarity = {
 		this.verb('POST', url, f);
 	},
 	listen: function (){
-		// Get query or post data
+		// Get query or post data - 1st to run
 		this.use(function (r, s, n){
+			s.setHeader("Content-Type", "text/html");
 			r.body = require('url').parse(r.url, true).query,
 			r.postbody = '';
 		    r.on('data', function (data) {
