@@ -10,12 +10,7 @@ Where you are used to seeing 'req' and 'res' for the request and response object
 var server = require('./clarity.js'); 
 
 server.post(/dopost$/, function(r, s, n){
-        var site = sites[r.headers.host.split(':')[0]], post = r.body;
-        post.date = _today();
-        if(!post.anchor.match(/^\//)) post.anchor = '/' + post.anchor;
-        site.posts.unshift(post);
-        server.postq.map(function(fn){ fn(site, post) });
-        s.redirect('/');
+        console.log('All the post vars are', r.body);
         n();
 })
 
@@ -23,6 +18,7 @@ server.get(/flava\.js/, function(r, s, n){
         s.render('./flava.js');
 })
 
+server.cache = {};
 server.use(function(r, s, n){
         s.render = function(t, o){
             o = o || {};
