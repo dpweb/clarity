@@ -1,5 +1,3 @@
-var debug = process.env.loglevel;
-
 var clarity = {
 	chain: function(r, s, n){
 		s.end();
