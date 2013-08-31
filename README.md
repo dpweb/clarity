@@ -60,11 +60,11 @@ Start the server.
 
 ####Couple things..
 
-Functions you add during .use() are last in, first executed on a new request
+Functions you add during .use() are last in, first executed on a new request.
 
 You must use <b>n()</b> at the end of your .use() functions, if the request will need to continue processing.    
 
-This is maybe the best part.  Easy access to GET and POST vars. There is a 'built-in' function.
+This is maybe the best part.  There is 'built-in' function to all GET and POST vars combined.
 ####r.body
 Which is accessible in any function and contains combined GET and POSTed variables.    
 
