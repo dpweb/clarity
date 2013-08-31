@@ -1,19 +1,18 @@
+var debug = process.env.loglevel;
 
 var clarity = {
 	chain: function(r, s, n){
 		s.end();
 	},
-	use: function (){
-		var that = this;
-		[].map.call(arguments, function(f){
-			that.chain = (function(nxt){
-				return function(r, s, n){
-					f(r, s, nxt.bind(this, r, s));
-				}
-			})(that.chain);
-		})
+	use: function (f){
+		this.chain = (function(nxt){
+			return function(r, s, n){
+				f(r, s, nxt.bind(this, r, s));
+			}
+		})(this.chain);
 	},
 	verb: function (vrb, url, f){
+		if(debug) console.log(vrb, url)
 		this.use(function(r, s, n){
 			if(r.method == vrb && r.url.match(url)){
 				f(r, s, n);
@@ -29,9 +28,8 @@ var clarity = {
 		this.verb('POST', url, f);
 	},
 	listen: function (){
-		// Get query or post data - 1st to run
+		// Get query or post data
 		this.use(function (r, s, n){
-			s.setHeader("Content-Type", "text/html");
 			r.body = require('url').parse(r.url, true).query,
 			r.postbody = '';
 		    r.on('data', function (data) {
@@ -43,7 +41,7 @@ var clarity = {
 		    	n();
 		    });
 		})
-		var svr = require('http').createServer(clarity.chain);
+		var svr = require('http').createServer(this.chain);
 		svr.listen.apply(svr, [].slice.call(arguments));
 	}
 }
