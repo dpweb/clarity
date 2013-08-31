@@ -1,9 +1,7 @@
 clarity
 =======
 
-Web server for NodeJS. Takes the best features of Connect/Express - req/res pipelining, in a minimal codebase.
-
-50 lines pure-JS. No dependencies. 5-6 MB runtime footprint.
+Web server for NodeJS. Takes the best features of Connect/Express - req/res pipelining, in a minimal codebase. 50 lines pure-JS. No dependencies. 5-6 MB runtime footprint.
 
 Where you are used to seeing 'req' and 'res' for the request and response objects, we just use 'r' and 's' in the examples below.
 
@@ -32,11 +30,6 @@ server.use(function(r, s, n){
             s.end(require('hogan.js').compile(server.cache[t]).render(o));
         }
         n();
-})
-
-server.get(/loaderio/, function(r, s, n){
-        var f = fs.readFileSync('./loaderio-9251122b30907a8cc34519fcfe6d1f64.txt');
-        s.end(f);
 })
 
 server.listen(80);
