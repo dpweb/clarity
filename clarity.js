@@ -10,7 +10,6 @@ var clarity = {
 		})(this.chain);
 	},
 	verb: function (vrb, url, f){
-		if(debug) console.log(vrb, url)
 		this.use(function(r, s, n){
 			if(r.method == vrb && r.url.match(url)){
 				f(r, s, n);
