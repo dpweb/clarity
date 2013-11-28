@@ -64,7 +64,12 @@ Functions you add during .use() are last in, first executed on a new request.
 
 You must use <b>n()</b> at the end of your .use() functions, if the request will need to continue processing.    
 
-This is maybe the best part.  There is 'built-in' function to all GET and POST vars combined.
+####.static
+Serve html in statically from a folder
+````
+clarity.static(/\/js/, './static');
+````
+
 ####r.body
 Which is accessible in any function and contains combined GET and POSTed variables.    
 
@@ -76,5 +81,16 @@ Posting origins=NY&destinations=CA in the POST body to http://localhost/?q=1 res
 	"q": "1",
 	"origins": "NY",
 	"destinations": "CA"
+}
+````
+
+####r.params
+Capture url using regex
+
+````
+http://server/api/sendEmail
+
+server.get(/api\/.*$/, function(r, s, n){
+    r.param[1] // sendEmail
 }
 ````

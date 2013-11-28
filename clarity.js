@@ -1,3 +1,7 @@
+var fs = require('fs'),
+	path = require('path'),
+	debug = process.env.debug;
+
 var clarity = {
 	chain: function(r, s, n){
 		s.end();
@@ -11,7 +15,10 @@ var clarity = {
 	},
 	verb: function (vrb, url, f){
 		this.use(function(r, s, n){
+			if(debug) console.log('<=', r.url, url);
+			r.params = r.url.match(url);
 			if(r.method == vrb && r.url.match(url)){
+				if(debug) console.log('== handling', r.url);
 				f(r, s, n);
 			} else {
 				n();
@@ -40,6 +47,18 @@ var clarity = {
 		})
 		var svr = require('http').createServer(this.chain);
 		svr.listen.apply(svr, [].slice.call(arguments));
+	},
+	cache:{},
+	static: function(url, dir){
+		var that = this;
+		this.verb('GET', url, function(r, s, n){
+			var spath = dir + '/' + path.basename(r.url);
+			if(!that.cache[spath]) 
+				 that.cache[spath] = fs.readFileSync(spath).toString();
+			if(debug) console.log('=>', that.cache[spath]);
+			s.write(that.cache[spath]);
+			n();
+		})
 	}
 }
 
