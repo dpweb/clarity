@@ -53,9 +53,13 @@ var clarity = {
 		var that = this;
 		this.verb('GET', url, function(r, s, n){
 			var spath = dir + '/' + path.basename(r.url);
+			if(!fs.existsSync(spath)){
+				s.writeHead(404, {"Content-Type": "text/plain"});
+				return s.end();
+			}
 			if(!that.cache[spath]) 
-				 that.cache[spath] = fs.readFileSync(spath).toString();
-			if(debug) console.log('=>', that.cache[spath]);
+				that.cache[spath] = fs.readFileSync(spath).toString();
+			if(debug) console.log('=>', spath);
 			s.write(that.cache[spath]);
 			n();
 		})
