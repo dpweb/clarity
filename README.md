@@ -56,23 +56,15 @@ server.use(function(r, s, n){
 ####.listen(port, [hostname], [backlog], [callback]) 
 Same params as 
 <a target=_ href='http://nodejs.org/api/http.html#http_server_listen_port_hostname_backlog_callback'>http server</a>    
-Start the server.
 
-####Couple things..
-
-Functions you add during .use() are last in, first executed on a new request.
-
-You must use <b>n()</b> at the end of your .use() functions, if the request will need to continue processing.    
-
-####.static
-Serve html in statically from a folder
+####.static(url to match, folder to serve)
+Direct a URL to serve html in statically from a folder
 ````
 clarity.static(/\/js/, './static');
 ````
 
 ####r.body
-Which is accessible in any function and contains combined GET and POSTed variables.    
-
+Which is accessible in any function and contains combined GET and POSTed variables.      
 Posting origins=NY&destinations=CA in the POST body to http://localhost/?q=1 results in..
 
 ````
