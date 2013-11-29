@@ -17,7 +17,7 @@ var clarity = {
 		this.use(function(r, s, n){
 			if(debug) console.log('<=', r.url, url);
 			r.params = r.url.match(url);
-			if(pmatch && pmatch.length) r.params.shift();
+			if(r.params && r.params.length) r.params.shift();
 			if(r.method == vrb && r.url.match(url)){
 				if(debug) console.log('== handling', r.url);
 				f(r, s, n);

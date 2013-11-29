@@ -15,5 +15,5 @@
     "url": "git://github.com/dpweb/clarity.git"
   },
   "main": "clarity.js",
-  "version": "1.0.3"
+  "version": "1.0.4"
 }
