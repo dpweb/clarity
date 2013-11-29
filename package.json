@@ -12,7 +12,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/dpweb/clarity.git"
+    "url": "git://github.com/dpweb/clarity.git",
+    "main": "clarity.js"
   },
   "version": "1.0.0"
 }
