@@ -1,0 +1,18 @@
+{
+  "name": "clarity",
+  "description": "",
+  "url": "http://github.com/dpweb/clarity/",
+  "keywords": [
+    "util",
+    "nodejs"
+  ],
+  "author": {
+    "name": "C Borkert",
+    "email": "ILIKECHEESE@dpsw.info"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/dpweb/clarity.git"
+  },
+  "version": "1.0.0"
+}
