@@ -86,3 +86,8 @@ server.get(/api\/.*$/, function(r, s, n){
     r.param[1] // sendEmail
 }
 ````
+
+####debugging info
+````
+$ debugclarity=1 node myapp.js
+````

@@ -1,9 +1,12 @@
 var fs = require('fs'),
 	path = require('path'),
-	debug = process.env.debug;
+	debug = process.env.debugclarity;
+
+if(debug) console.log('CLARITY DEBUGGING');
 
 var clarity = {
 	chain: function(r, s, n){
+		if(debug) console.log('CLARITY COMPLETE REQ PROCESSING');
 		s.end();
 	},
 	use: function (f){
@@ -14,6 +17,7 @@ var clarity = {
 		})(this.chain);
 	},
 	verb: function (vrb, url, f){
+		if(debug) console.log('CLARITY NEW VERB', vrb, url);
 		this.use(function(r, s, n){
 			if(debug) console.log('<=', r.url, url);
 			r.params = r.url.match(url);
@@ -46,6 +50,7 @@ var clarity = {
 		    	n();
 		    });
 		})
+		console.log(this.chain)
 		var svr = require('http').createServer(this.chain);
 		svr.listen.apply(svr, [].slice.call(arguments));
 	},
@@ -58,7 +63,7 @@ var clarity = {
 				s.writeHead(404, {"Content-Type": "text/plain"});
 				return s.end();
 			}
-			if(!that.cache[spath]) 
+			if(debug || !that.cache[spath]) 
 				that.cache[spath] = fs.readFileSync(spath).toString();
 			if(debug) console.log('=>', spath);
 			s.write(that.cache[spath]);
