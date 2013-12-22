@@ -95,5 +95,5 @@ $ debugclarity=1 node myapp.js
 ####Command line
 Start server and static current directory
 ````
-$ node clarity
+$ node clarity [port]
 ````
