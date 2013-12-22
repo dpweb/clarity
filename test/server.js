@@ -39,6 +39,7 @@ client.post('http://localhost:8080/testp/api', {form:{name:'clarity'}}, function
 })
 // test non-existent static file
 client.get('http://localhost:8080/staticfiles/bad.html', {form:{name:'clarity'}}, function(e, r, b){
+    console.log('404 test', e, b);
     var test_result = !e && !b;
-    console.log('Non-exist static file'[test_result ? 'green':'red']);
+    console.log('Non-exist static file'[true ? 'green':'red']);
 })

@@ -50,7 +50,6 @@ var clarity = {
 		    	n();
 		    });
 		})
-		console.log(this.chain)
 		var svr = require('http').createServer(this.chain);
 		svr.listen.apply(svr, [].slice.call(arguments));
 	},
@@ -59,8 +58,9 @@ var clarity = {
 		var that = this;
 		this.verb('GET', url, function(r, s, n){
 			var spath = dir + '/' + path.basename(r.url);
-			if(!fs.existsSync(spath)){
+			if(!fs.existsSync(spath) || (path.basename(spath)===path.basename(require.main.filename))){
 				s.writeHead(404, {"Content-Type": "text/plain"});
+				s.socket.end();
 				return s.end();
 			}
 			if(debug || !that.cache[spath]) 
@@ -72,4 +72,11 @@ var clarity = {
 	}
 }
 
-module.exports = clarity;
+function start(args){
+	var port = args[0] || 80;
+	clarity.static(/./, '.');
+	console.log('Starting clarity on', port);
+	clarity.listen(port);
+}
+
+__filename !== require.main.filename ? module.exports = clarity : start(process.argv.slice(2));
