@@ -1,6 +1,8 @@
 var server = require('../clarity.js'),
 	colors = require('colors');
 
+server.static('static');
+
 server.get(/testg$/, function(r, s, n){
         s.render('testg');
         s.end();
@@ -18,13 +20,12 @@ server.use(function(r, s, n){
         n();
 })
 
-server.static(/\/staticfiles/, 'static');
 server.listen(8080);
 
 // tests
 
 var client = require('request');
-client.get('http://localhost:8080/staticfiles/index.html', function(e, r, b){
+client.get('http://localhost:8080/index.html', function(e, r, b){
 	var test_result = 'Hi Im static' === b;
 	console.log('Static files'[test_result ? 'green':'red']);
 })

@@ -57,11 +57,12 @@ server.use(function(r, s, n){
 Same params as 
 <a target=_ href='http://nodejs.org/api/http.html#http_server_listen_port_hostname_backlog_callback'>http server</a>    
 
-####.static(url to match, folder to serve)
-Direct a URL to serve html in statically from a folder
+####.static
+Serve html statically from a folder
 ````
-clarity.static(/\/js/, './static');
+clarity.static('./folder');
 ````
+Note - static should be be used before other get, post, or use statements.
 
 ####r.body
 Which is accessible in any function and contains combined GET and POSTed variables.      

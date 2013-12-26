@@ -54,22 +54,27 @@ var clarity = {
 		svr.listen.apply(svr, [].slice.call(arguments));
 	},
 	cache:{},
-	static: function(url, dir){
-		var that = this;
-		this.verb('GET', url, function(r, s, n){
-			var spath = dir + '/' + path.basename(r.url);
-			if(!fs.existsSync(spath) || (path.basename(spath)===path.basename(require.main.filename))){
-				s.writeHead(404, {"Content-Type": "text/plain"});
-				s.socket.end();
-				return s.end();
-			}
-			if(debug || !that.cache[spath]) 
-				that.cache[spath] = fs.readFileSync(spath).toString();
-			if(debug) console.log('=>', spath);
-			s.write(that.cache[spath]);
-			n();
-		})
-	}
+		static: function(dir){
+			var thatdir = dir, that = this; paths = path;
+			this.use(function(r, s, n){
+				if(r.url == '/') r.url = '/index.html';
+				var path = paths.dirname(require.main.filename) + '/' + thatdir + r.url;
+				if(debug) console.log('Checking for static');
+				if(debug || !that.cache[path]){
+					if(fs.existsSync(path)){
+						if(debug) console.log('loading', path);
+						that.cache[path] = fs.readFileSync(path);
+					} else {
+						if(debug) console.log('not found', path);
+						s.writeHead(404, {"Content-Type": "text/plain"});
+						s.socket.end();
+						return s.end();	
+					}
+				}
+				s.end(that.cache[path]);
+				n();
+			})
+		}
 }
 
 function start(args){
