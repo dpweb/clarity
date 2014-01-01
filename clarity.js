@@ -52,6 +52,7 @@ var clarity = {
 		})
 		var svr = require('http').createServer(this.chain);
 		svr.listen.apply(svr, [].slice.call(arguments));
+		return svr;
 	},
 	cache:{},
 		static: function(dir){
