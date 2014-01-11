@@ -19,11 +19,23 @@ var clarity = {
 	verb: function (vrb, url, f){
 		if(debug) console.log('CLARITY NEW VERB', vrb, url);
 		this.use(function(r, s, n){
-			if(debug) console.log('<=', r.url, url);
-			r.params = r.url.match(url);
-			if(r.params && r.params.length) r.params.shift();
-			if(r.method == vrb && r.url.match(url)){
-				if(debug) console.log('== handling', r.url);
+			if(debug) console.log('<=', r.url);
+			if(typeof url === 'string'){
+				var key = url.split(':');
+				if(key.length > 1){
+						r.params = {};
+						r.params[key[1]] = r.url.replace(key[0], '');
+						var murl = key[0];
+						r.url = r.url.split(':')[0];
+						console.log(':', r.params);
+				} else {
+					r.params = r.url.match(url);
+	                if(r.params && r.params.length) r.params.shift();
+				}
+			}
+			console.log('attempting match with', murl || url);
+			if(r.method == vrb && r.url.match(murl || url)){
+				if(debug) console.log('== handling', r.url, r.params);
 				f(r, s, n);
 			} else {
 				n();
@@ -52,7 +64,8 @@ var clarity = {
 		})
 		var svr = require('http').createServer(this.chain);
 		svr.listen.apply(svr, [].slice.call(arguments));
-		return svr;
+		this.http =svr;
+		return this
 	},
 	cache:{},
 		static: function(dir){
@@ -67,9 +80,7 @@ var clarity = {
 						that.cache[path] = fs.readFileSync(path);
 					} else {
 						if(debug) console.log('not found', path);
-						s.writeHead(404, {"Content-Type": "text/plain"});
-						s.socket.end();
-						return s.end();	
+						n();
 					}
 				}
 				s.end(that.cache[path]);

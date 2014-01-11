@@ -1,18 +1,17 @@
-module.exports = function(app){
-    
-    app.use(function(r, s, n){
-            s.render = function(t, o){
-                o = o || {};
-                server.cache[t] = server.cache[t] || fs.readFileSync(t).toString();
-                s.end(require('hogan.js').compile(server.cache[t]).render(o));
-            }
-            n();
-    })
-    app.use(function(r, s, n){
-            s.redirect = function(url){
-                s.writeHead(302, {'Location': url });
-            }
-            n();
-    })
-    
+
+module.exports = {
+    "render": function(r, s, n){
+        s.render = function(t, o){
+            var cache = {};
+            o = o || {};
+            cache[t] = cache[t] || fs.readFileSync(t).toString();
+            s.end(require('hogan.js').compile(cache[t]).render(o));
+        };
+    },
+    "redirect": function(r, s, n){
+        s.redirect = function(r, s, n){
+            s.writeHead(302, {'Location': url });
+            s.end();
+        }
+    }
 }
